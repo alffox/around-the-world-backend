@@ -1,0 +1,19 @@
+{
+  "name": "liferay-around-the-world-backend",
+  "version": "1.0.0",
+  "description": "Backend REST API services for the Liferay Around the World app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alffox/liferay-around-the-world-backend.git"
+  },
+  "author": "Alfonso Crisci",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alffox/liferay-around-the-world-backend/issues"
+  },
+  "homepage": "https://github.com/alffox/liferay-around-the-world-backend#readme"
+}
