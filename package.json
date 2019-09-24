@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/alffox/liferay-around-the-world-backend/issues"
   },
-  "homepage": "https://github.com/alffox/liferay-around-the-world-backend#readme"
+  "homepage": "https://github.com/alffox/liferay-around-the-world-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1"
+  }
 }
