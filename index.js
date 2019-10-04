@@ -4,11 +4,35 @@ const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const cors = require("cors");
+const mcache = require('memory-cache');
 
 const port = process.env.PORT || 5000;
 
 app.use(morgan("combined"));
 app.use(cors());
+
+/**
+ * In memory cache based on this article:
+ * https://medium.com/the-node-js-collection/simple-server-side-cache-for-express-js-with-node-js-45ff296ca0f0
+ * @param {*} duration 
+ */
+var cache = (duration) => {
+  return (req, res, next) => {
+    let key = '__express__' + req.originalUrl || req.url
+    let cachedBody = mcache.get(key)
+    if (cachedBody) {
+      res.send(cachedBody)
+      return
+    } else {
+      res.sendResponse = res.send
+      res.send = (body) => {
+        mcache.put(key, body, duration * 1000);
+        res.sendResponse(body)
+      }
+      next()
+    }
+  }
+}
 
 app.get("/TimeDateEndpoint*", function(req, res) {
   var timeDateQueryString = req.url.substring("/TimeDateEndpoint".length);
@@ -39,7 +63,7 @@ app.get("/TimeDateEndpoint*", function(req, res) {
     });
 });
 
-app.get("/topHeadlinesEndpoint*", function(req, res) {
+app.get("/topHeadlinesEndpoint*", cache(720), function(req, res) {
   var newsQueryString = req.url.substring("/topHeadlinesEndpoint".length);
   newsQueryString += "&apiKey=";
   newsQueryString += process.env.newsAPIKey;
@@ -68,7 +92,7 @@ app.get("/topHeadlinesEndpoint*", function(req, res) {
     });
 });
 
-app.get("/everythingNewsEndpoint*", function(req, res) {
+app.get("/everythingNewsEndpoint*", cache(720), function(req, res) {
   var newsQueryString = req.url.substring("/everythingNewsEndpoint".length);
   newsQueryString += "&apiKey=";
   newsQueryString += process.env.newsAPIKey;
@@ -97,7 +121,7 @@ app.get("/everythingNewsEndpoint*", function(req, res) {
     });
 });
 
-app.get("/weatherEndpoint*", function(req, res) {
+app.get("/weatherEndpoint*", cache(360), function(req, res) {
   var wheatherQueryString = req.url.substring("/weatherEndpoint".length);
   wheatherQueryString += "&appid=";
   wheatherQueryString += process.env.weatherAPIKey;
@@ -127,7 +151,7 @@ app.get("/weatherEndpoint*", function(req, res) {
     });
 });
 
-app.get("/forecastEndpoint*", function(req, res) {
+app.get("/forecastEndpoint*", cache(360), function(req, res) {
   var wheatherQueryString = req.url.substring("/forecastEndpoint".length);
   wheatherQueryString += "&appid=";
   wheatherQueryString += process.env.weatherAPIKey;
@@ -157,7 +181,7 @@ app.get("/forecastEndpoint*", function(req, res) {
     });
 });
 
-app.get("/webcamEndpoint*", function(req, res) {
+app.get("/webcamEndpoint*", cache(10080), function(req, res) {
   var queryParams = query.parse(req.url.substring("/webcamEndpoint?".length));
 
   if (queryParams["countryCode"] === "ma" || "cn" || "in") {
@@ -207,7 +231,7 @@ app.get("/webcamEndpoint*", function(req, res) {
     });
 });
 
-app.get("/picturesEndpoint*", function(req, res) {
+app.get("/picturesEndpoint*", cache(720), function(req, res) {
   var picturesQueryString = req.url.substring("/picturesEndpoint".length);
   picturesQueryString += "&client_id=";
   picturesQueryString += process.env.unsplashAPIKey;
