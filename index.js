@@ -39,63 +39,63 @@ app.get("/TimeDateEndpoint*", function(req, res) {
     });
 });
 
-app.get("/topHeadlinesEndpoint*", function(req, res) {
-  var newsQueryString = req.url.substring("/topHeadlinesEndpoint".length);
-  newsQueryString += "&apiKey=";
-  newsQueryString += process.env.newsAPIKey;
+//   app.get("/topHeadlinesEndpoint*", function(req, res) {
+//   var newsQueryString = req.url.substring("/topHeadlinesEndpoint".length);
+//   newsQueryString += "&apiKey=";
+//   newsQueryString += process.env.newsAPIKey;
 
-  var newsUrl = "https://newsapi.org/v2/top-headlines" + newsQueryString;
-  https
-    .get(newsUrl, resp => {
-      let rawData = "";
-      resp.on("data", chunk => {
-        rawData += chunk;
-      });
-      resp.on("end", () => {
-        try {
-          const parsedData = JSON.parse(rawData);
-          res.statusCode = 200;
-          res.setHeader("Content-Type", "application/json");
-          res.setHeader("Cache-Control", "max-age=3600");
-          res.end(JSON.stringify(parsedData));
-        } catch (e) {
-          console.error(e.message);
-        }
-      });
-    })
-    .on("error", function(e) {
-      console.log(e.message);
-    });
-});
+//   var newsUrl = "https://newsapi.org/v2/top-headlines" + newsQueryString;
+//   https
+//     .get(newsUrl, resp => {
+//       let rawData = "";
+//       resp.on("data", chunk => {
+//         rawData += chunk;
+//       });
+//       resp.on("end", () => {
+//         try {
+//           const parsedData = JSON.parse(rawData);
+//           res.statusCode = 200;
+//           res.setHeader("Content-Type", "application/json");
+//           res.setHeader("Cache-Control", "max-age=3600");
+//           res.end(JSON.stringify(parsedData));
+//         } catch (e) {
+//           console.error(e.message);
+//         }
+//       });
+//     })
+//     .on("error", function(e) {
+//       console.log(e.message);
+//     });
+// });
 
-app.get("/everythingNewsEndpoint*", function(req, res) {
-  var newsQueryString = req.url.substring("/everythingNewsEndpoint".length);
-  newsQueryString += "&apiKey=";
-  newsQueryString += process.env.newsAPIKey;
+// app.get("/everythingNewsEndpoint*", function(req, res) {
+//   var newsQueryString = req.url.substring("/everythingNewsEndpoint".length);
+//   newsQueryString += "&apiKey=";
+//   newsQueryString += process.env.newsAPIKey;
 
-  var newsUrl = "https://newsapi.org/v2/everything" + newsQueryString;
-  https
-    .get(newsUrl, resp => {
-      let rawData = "";
-      resp.on("data", chunk => {
-        rawData += chunk;
-      });
-      resp.on("end", () => {
-        try {
-          const parsedData = JSON.parse(rawData);
-          res.statusCode = 200;
-          res.setHeader("Content-Type", "application/json");
-          res.setHeader("Cache-Control", "max-age=3600");
-          res.end(JSON.stringify(parsedData));
-        } catch (e) {
-          console.error(e.message);
-        }
-      });
-    })
-    .on("error", function(e) {
-      console.log(e.message);
-    });
-});
+//   var newsUrl = "https://newsapi.org/v2/everything" + newsQueryString;
+//   https
+//     .get(newsUrl, resp => {
+//       let rawData = "";
+//       resp.on("data", chunk => {
+//         rawData += chunk;
+//       });
+//       resp.on("end", () => {
+//         try {
+//           const parsedData = JSON.parse(rawData);
+//           res.statusCode = 200;
+//           res.setHeader("Content-Type", "application/json");
+//           res.setHeader("Cache-Control", "max-age=3600");
+//           res.end(JSON.stringify(parsedData));
+//         } catch (e) {
+//           console.error(e.message);
+//         }
+//       });
+//     })
+//     .on("error", function(e) {
+//       console.log(e.message);
+//     });
+// });
 
 app.get("/weatherEndpoint*", function(req, res) {
   var wheatherQueryString = req.url.substring("/weatherEndpoint".length);
