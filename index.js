@@ -160,10 +160,19 @@ app.get("/forecastEndpoint*", function(req, res) {
 app.get("/webcamEndpoint*", function(req, res) {
   var queryParams = query.parse(req.url.substring("/webcamEndpoint?".length));
 
+  if (queryParams["countryCode"] === "ma" || "cn" || "in") {
     var api =
       "/webcams/list/country=" + 
       queryParams["countryCode"] +
-      "?show=webcams%3Aimage%2Clocation&amp;lang=en";
+      "/orderby=random?show=webcams%3Aimage%2Clocation&amp;lang=en";
+  } else {
+    var api =
+      "/webcams/list/nearby=" +
+      queryParams["lat"] +
+      "," +
+      queryParams["lon"] +
+      ",50/orderby=random/limit=1?show=webcams%3Aimage%2Clocation&amp;lang=en";
+  }
 
   var options = {
     host: "webcamstravel.p.rapidapi.com",
